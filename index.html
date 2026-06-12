@@ -201,7 +201,7 @@
   <div class="player-hint">Crea una contraseña — solo tú podrás editar tu quiniela</div>
 </div>
 
-<div id="chipsRow" style="background:var(--navy);padding:12px 16px 10px;display:flex;flex-wrap:wrap;gap:6px;">
+<div id="chipsRow" style="background:var(--navy);padding:12px 16px 10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-start;">
   <div style="color:rgba(255,255,255,0.22);font-size:13px;padding:4px;" id="noChipsMsg">Cargando...</div>
 </div>
 <div class="sync-bar">
@@ -887,9 +887,27 @@ function renderChips() {
   const row = document.getElementById('chipsRow');
   if (!players.length) { row.innerHTML = '<div style="color:rgba(255,255,255,0.22);font-size:13px;padding:4px;">Aún no hay jugadores — ¡sé el primero!</div>'; return; }
   row.innerHTML = players.map((p, i) =>
-    `<div class="player-chip${i===activeIdx?' active':''}${p.done?' done':''}" onclick="selectPlayer(${i})">${p.done?'✅ ':''}${p.name}</div>`
+    `<div class="player-chip${i===activeIdx?' active':''}${p.done?' done':''}"
+      style="width:calc(25% - 6px);justify-content:center;text-align:center;font-size:12px;padding:6px 8px;"
+      onclick="chipClick(${i}, '${p.id}')">${p.name}</div>`
   ).join('');
 }
+
+window.chipClick = function(i, id) {
+  // If deadline passed, clicking chip views their quiniela
+  if (isDeadlinePassed()) {
+    viewIdx = i;
+    const btn = document.querySelector('.tab-btn[onclick*="grupos"]');
+    if (btn) window.switchTab('grupos', btn);
+    const sel = document.getElementById('viewPlayerSelect');
+    if (sel) sel.value = id;
+    renderGroups(); renderProgressBanner();
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    showToast('👁 Viendo quiniela de ' + players[i].name);
+  } else {
+    selectPlayer(i);
+  }
+};
 
 function renderProgressBanner() {
   const banner = document.getElementById('progressBanner');
