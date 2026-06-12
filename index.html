@@ -1072,6 +1072,21 @@ function renderGoleadores() {
 }
 
 // ── VIEW PLAYER (read-only, no password) ──
+window.viewPlayerFromLeaderboard = function(id) {
+  viewIdx = players.findIndex(p => p.id === id);
+  // Switch to quiniela tab
+  const btn = document.querySelector('.tab-btn[onclick*="grupos"]');
+  if (btn) window.switchTab('grupos', btn);
+  // Update dropdown to match
+  const sel = document.getElementById('viewPlayerSelect');
+  if (sel) sel.value = id;
+  renderGroups();
+  renderProgressBanner();
+  // Scroll to top
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  showToast('👁 Viendo quiniela de ' + players[viewIdx].name);
+};
+
 window.setViewPlayer = function(id) {
   if (!id) { viewIdx = null; }
   else { viewIdx = players.findIndex(p => p.id === id); }
