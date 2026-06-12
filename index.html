@@ -366,7 +366,10 @@
     <!-- LEADERBOARD -->
     <div style="background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(13,31,78,0.08);border:1px solid var(--border);margin-bottom:24px;">
       <div style="background:var(--navy);padding:16px 20px;display:flex;align-items:center;gap:12px;">
-        <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold-light);letter-spacing:2px;">🏆 Tabla de Posiciones</span>
+        <div>
+          <span style="font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--gold-light);letter-spacing:2px;">🏆 Tabla de Posiciones</span>
+          <div style="font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;letter-spacing:1px;font-family:'Teko',sans-serif;">TOCA UN NOMBRE PARA VER SUS PRONÓSTICOS</div>
+        </div>
       </div>
       <div id="leaderboardTable" style="padding:0;">
         <!-- filled by JS -->
@@ -1341,7 +1344,7 @@ function renderLeaderboard() {
     return `<div style="display:flex;align-items:center;gap:12px;padding:14px 20px;border-bottom:1px solid rgba(13,31,78,0.05);${isTop?'background:rgba(201,151,42,0.04);':''}">
       <div style="font-size:20px;width:28px;text-align:center;">${medal}</div>
       <div style="flex:1;">
-        <div style="font-size:14px;font-weight:800;color:var(--navy);">${p.name}</div>
+        <div style="font-size:14px;font-weight:800;color:var(--navy);cursor:pointer;" onclick="viewPlayerFromLeaderboard('${p.id}')">${p.name}</div>
 
       </div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:${isTop?'var(--gold)':'var(--navy)'};">${p.pts}</div>
