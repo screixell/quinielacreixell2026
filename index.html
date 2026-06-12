@@ -37,8 +37,7 @@
   .player-hint{font-size:11px;color:rgba(255,255,255,0.28);}
 
   /* CHIPS */
-  .players-scroll{display:flex;gap:8px;overflow-x:auto;padding:12px 16px 8px;background:var(--navy);scrollbar-width:none;}
-  .players-scroll::-webkit-scrollbar{display:none;}
+
   .player-chip{display:flex;align-items:center;gap:6px;border-radius:20px;padding:7px 14px;cursor:pointer;white-space:nowrap;transition:all 0.2s;font-size:13px;font-weight:700;border:1.5px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.06);}
   .player-chip:hover{border-color:var(--gold);color:var(--white);}
   .player-chip.active{background:var(--gold);border-color:var(--gold);color:var(--navy);}
@@ -202,7 +201,7 @@
   <div class="player-hint">Crea una contraseña — solo tú podrás editar tu quiniela</div>
 </div>
 
-<div class="players-scroll" id="chipsRow">
+<div id="chipsRow" style="background:var(--navy);padding:12px 16px 10px;display:flex;flex-wrap:wrap;gap:6px;">
   <div style="color:rgba(255,255,255,0.22);font-size:13px;padding:4px;" id="noChipsMsg">Cargando...</div>
 </div>
 <div class="sync-bar">
@@ -223,6 +222,13 @@
   <div class="main-wrap">
     <div id="noPlayerWarn" class="empty-banner" style="display:none;"><div class="ico">👆</div><p>Agrega tu nombre arriba para empezar</p></div>
     <div id="progressBanner" style="display:none;"></div>
+    <!-- Player viewer selector -->
+    <div id="viewerSelector" style="display:none;background:var(--white);border-radius:10px;padding:12px 16px;margin-bottom:16px;box-shadow:0 2px 8px rgba(13,31,78,0.07);border:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">👁 Ver quiniela de:</span>
+      <select id="viewPlayerSelect" style="flex:1;min-width:150px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);background:var(--cream);outline:none;" onchange="setViewPlayer(this.value)">
+        <option value="">— Selecciona un jugador —</option>
+      </select>
+    </div>
     <div class="group-grid" id="groupGrid"></div>
   </div>
 
@@ -660,6 +666,7 @@ const MATCHES = [
 
 let players = [];
 let activeIdx = null;
+let viewIdx = null; // player being viewed (read-only, no password needed)
 let pendingSelectIdx = null;
 let pendingUnlockIdx = null;
 let saveTimeout = null;
@@ -870,7 +877,7 @@ function countFilled(i) {
 }
 
 function renderAll() {
-  renderChips(); renderProgressBanner(); renderGroups(); renderPlayerList(); updateStats(); updateMonto(); renderGoleadores(); renderLeaderboard(); renderMatchResultsDisplay();
+  renderChips(); renderProgressBanner(); renderGroups(); renderPlayerList(); updateStats(); updateMonto(); renderGoleadores(); renderLeaderboard(); renderMatchResultsDisplay(); updateViewerSelector();
 }
 
 function renderChips() {
@@ -883,7 +890,23 @@ function renderChips() {
 
 function renderProgressBanner() {
   const banner = document.getElementById('progressBanner');
-  if (activeIdx === null || !players.length) { banner.style.display = 'none'; return; }
+  if (!players.length) { banner.style.display = 'none'; return; }
+  // Show viewing banner if looking at someone else's quiniela
+  if (viewIdx !== null && viewIdx !== activeIdx) {
+    const vp = players[viewIdx];
+    banner.style.display = 'block';
+    banner.innerHTML = `<div class="progress-banner" style="border-color:rgba(201,151,42,0.3);">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span style="font-size:18px;">👁</span>
+        <div>
+          <div style="font-family:'Teko',sans-serif;font-size:18px;letter-spacing:1px;color:var(--navy);">Viendo quiniela de ${vp.name}</div>
+          <div style="font-size:12px;color:rgba(13,31,78,0.4);">Solo lectura — toca ⚽ Quiniela para editar la tuya</div>
+        </div>
+      </div>
+    </div>`;
+    return;
+  }
+  if (activeIdx === null) { banner.style.display = 'none'; return; }
   const p = players[activeIdx];
   const filled = countFilled(activeIdx);
   const pct = Math.round((filled / 72) * 100);
@@ -912,8 +935,11 @@ function renderGroups() {
   const warn = document.getElementById('noPlayerWarn');
   if (!players.length) { warn.style.display = 'block'; grid.style.display = 'none'; return; }
   warn.style.display = 'none'; grid.style.display = 'grid';
-  const ap = activeIdx !== null ? players[activeIdx] : null;
-  const locked = ap?.done || isDeadlinePassed();
+  // Use viewIdx for read-only display, activeIdx for editing
+  const displayIdx = viewIdx !== null ? viewIdx : activeIdx;
+  const ap = displayIdx !== null ? players[displayIdx] : null;
+  const locked = true; // always locked for viewing - editing done through active player only
+  const isViewing = viewIdx !== null; // read-only mode
   grid.innerHTML = Object.keys(GROUPS).map(gk => {
     const g = GROUPS[gk];
     const rows = [1,2,3].map(md => {
@@ -922,14 +948,40 @@ function renderGroups() {
         const pr = ap?.preds?.[m.id] || {};
         const hv = pr.h !== undefined ? pr.h : '';
         const av = pr.a !== undefined ? pr.a : '';
-        const dis = (!ap || locked) ? 'disabled' : '';
-        return `<div class="match-row">
+        const dis = 'disabled';
+        // Color coding based on real results
+        const real = realResults[m.id];
+        let scoreStyle = '';
+        let starH = '', starA = '';
+        if (real && real.h !== '' && real.h !== undefined && hv !== '' && av !== '') {
+          const rh = parseInt(real.h), ra = parseInt(real.a);
+          const ph = parseInt(hv), pa = parseInt(av);
+          const exactMatch = ph === rh && pa === ra;
+          const realWinner = rh > ra ? 'h' : ra > rh ? 'a' : 'd';
+          const predWinner = ph > pa ? 'h' : pa > ph ? 'a' : 'd';
+          const winnerMatch = realWinner === predWinner;
+          if (exactMatch) {
+            scoreStyle = 'background:rgba(46,125,50,0.12);border-radius:6px;';
+            starH = starA = '⭐';
+          } else if (winnerMatch) {
+            scoreStyle = 'background:rgba(76,175,80,0.08);border-radius:6px;';
+          } else {
+            scoreStyle = 'background:rgba(196,18,48,0.07);border-radius:6px;';
+          }
+        }
+        return `<div class="match-row" style="${scoreStyle}">
           <span class="team-name home">${m.home}</span>
-          <input type="tel" inputmode="numeric" pattern="[0-9]*" class="score-input${hv!==''?' filled':''}" value="${hv}" ${dis}
-            onchange="setPred('${m.id}','h',this.value)" oninput="clamp(this)" placeholder="–"/>
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+            ${starH ? `<span style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:9px;">${starH}</span>` : ''}
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" class="score-input${hv!==''?' filled':''}" value="${hv}" ${dis}
+              onchange="setPred('${m.id}','h',this.value)" oninput="clamp(this)" placeholder="–"/>
+          </div>
           <div class="vs-sep">–</div>
-          <input type="tel" inputmode="numeric" pattern="[0-9]*" class="score-input${av!==''?' filled':''}" value="${av}" ${dis}
-            onchange="setPred('${m.id}','a',this.value)" oninput="clamp(this)" placeholder="–"/>
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;">
+            ${starA && !starH ? `<span style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:9px;">${starA}</span>` : ''}
+            <input type="tel" inputmode="numeric" pattern="[0-9]*" class="score-input${av!==''?' filled':''}" value="${av}" ${dis}
+              onchange="setPred('${m.id}','a',this.value)" oninput="clamp(this)" placeholder="–"/>
+          </div>
           <span class="team-name away">${m.away}</span>
         </div>`;
       }).join('');
@@ -939,7 +991,7 @@ function renderGroups() {
         <div class="group-letter">${gk}</div>
         <div><div class="group-subname">Grupo ${gk}</div><div class="group-teams-list">${g.teams.join(' · ')}</div></div>
       </div>
-      <div class="group-matches">${rows}${locked?'<div class="locked-overlay">🔒 Finalizada — toca "🔓 Editar" para cambios</div>':''}</div>
+      <div class="group-matches">${rows}${locked?'':''}</div>
     </div>`;
   }).join('');
 }
@@ -1017,6 +1069,27 @@ function renderGoleadores() {
   // Disable if done
   if (g1) g1.disabled = !!p.done;
   if (g2) g2.disabled = !!p.done;
+}
+
+// ── VIEW PLAYER (read-only, no password) ──
+window.setViewPlayer = function(id) {
+  if (!id) { viewIdx = null; }
+  else { viewIdx = players.findIndex(p => p.id === id); }
+  renderGroups();
+  renderProgressBanner();
+};
+
+function updateViewerSelector() {
+  const sel = document.getElementById('viewPlayerSelect');
+  const vs = document.getElementById('viewerSelector');
+  if (!sel || !vs) return;
+  const currentVal = sel.value;
+  sel.innerHTML = '<option value="">— Selecciona un jugador —</option>' +
+    players.filter(p => p.done || countFilled(players.indexOf(p)) > 0)
+      .map(p => `<option value="${p.id}" ${p.id === currentVal ? 'selected' : ''}>${p.name}</option>`)
+      .join('');
+  // Show viewer selector when deadline passed (quiniela closed)
+  vs.style.display = 'flex';
 }
 
 window.clamp = inp => {
@@ -1254,7 +1327,7 @@ function renderLeaderboard() {
       <div style="font-size:20px;width:28px;text-align:center;">${medal}</div>
       <div style="flex:1;">
         <div style="font-size:14px;font-weight:800;color:var(--navy);">${p.name}</div>
-        <div style="font-size:11px;color:rgba(13,31,78,0.4);margin-top:1px;">${filled}/72 pronósticos · ${p.done?'✅ Finalizada':'✏️ En progreso'}</div>
+
       </div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;color:${isTop?'var(--gold)':'var(--navy)'};">${p.pts}</div>
       <div style="font-size:11px;color:rgba(13,31,78,0.4);">pts</div>
