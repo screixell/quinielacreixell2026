@@ -660,6 +660,7 @@ const MATCHES = [
 let players = [];
 let activeIdx = null;
 let viewIdx = null;
+let realResults = {}; // initialized early, updated by Firestore listener
 let rankedPlayers = []; // updated by renderLeaderboard, reused by renderChips // player being viewed (read-only, no password needed)
 let pendingSelectIdx = null;
 let pendingUnlockIdx = null;
@@ -1220,12 +1221,12 @@ function updateCountdown() {
   const target = new Date('2026-06-11T19:00:00-06:00'); // 11 Jun 7pm Mexico City
   const now = new Date();
   const diff = target - now;
-  if (diff <= 0) { document.getElementById('countdown').textContent = '¡Ya empezó! ⚽'; return; }
+  const cdEl2 = document.getElementById('countdown'); if (diff <= 0) { if(cdEl2) cdEl2.textContent = '¡Ya empezó! ⚽'; return; }
   const d = Math.floor(diff / 86400000);
   const h = Math.floor((diff % 86400000) / 3600000);
   const m = Math.floor((diff % 3600000) / 60000);
   const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('countdown').textContent = `${d}d ${h}h ${m}m ${s}s`;
+  const cdEl = document.getElementById('countdown'); if (cdEl) cdEl.textContent = `${d}d ${h}h ${m}m ${s}s`;
 
   // Show deadline warning when close
   const deadlineDiff = DEADLINE - now;
@@ -1289,7 +1290,7 @@ window.adminLogin = function() {
 const resultsDoc = doc(db, 'meta', 'results');
 
 // Listen to results in real time
-let realResults = {}; // matchId -> {h, a}
+// realResults initialized above
 onSnapshot(resultsDoc, (snap) => {
   if (snap.exists()) realResults = snap.data();
   else realResults = {};
