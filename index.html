@@ -851,7 +851,14 @@ onSnapshot(playersCol,
     const changedIds = snapshot.docChanges().map(c => c.doc.id);
     const onlyActiveChanged = changedIds.length > 0 && changedIds.every(id => id === activeId);
 
-    if (onlyActiveChanged) {
+    // Check if fase tab is active — if so, don't re-render bracket (prevents cursor loss)
+    const faseTabActive = document.getElementById('tab-fase')?.classList.contains('active');
+
+    if (faseTabActive) {
+      // Only update chips and leaderboard, skip bracket re-render
+      updateFaseActivePlayerSelector();
+      renderFaseLeaderboard();
+    } else if (onlyActiveChanged) {
       // Just update chips, leaderboard and stats — don't touch the group inputs
       renderChips();
       renderProgressBanner();
@@ -2473,9 +2480,7 @@ window.saveFasePred = async function(round, matchId, side, val) {
   if(!p.preds2[round]) p.preds2[round]={};
   if(!p.preds2[round][matchId]) p.preds2[round][matchId]={};
   p.preds2[round][matchId][side] = val===''?'':parseInt(val);
-  // Re-render bracket to propagate winners (after short delay so input keeps focus)
-  setTimeout(() => renderBracket(), 50);
-  // Debounce save to Firestore
+  // Debounce save to Firestore — NO re-render until after save to avoid cursor loss
   if(faseSaveTimeout) clearTimeout(faseSaveTimeout);
   const status = document.getElementById('faseSaveStatus');
   if(status) status.textContent = '⟳ guardando...';
@@ -2483,8 +2488,13 @@ window.saveFasePred = async function(round, matchId, side, val) {
     try{
       await updateDoc(doc(playersCol,p.id),{preds2:p.preds2});
       if(status) status.textContent = '✓ guardado';
-    }catch(e){if(status) status.textContent='⚠ error';}
-  },800);
+      // Re-render only after successful save, to propagate winners
+      renderBracket();
+    }catch(e){
+      if(status) status.textContent='⚠ error';
+      console.error('saveFasePred error:',e);
+    }
+  },1000);
 };
 
 // Determine winner of a match from predictions
