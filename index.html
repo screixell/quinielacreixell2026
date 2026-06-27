@@ -195,9 +195,8 @@
   <button class="tab-btn" onclick="switchTab('jugadores',this)">👥 Jugadores</button>
   <button class="tab-btn active" onclick="switchTab('resultados',this)">🏅 Resultados</button>
   <button class="tab-btn" onclick="switchTab('premiacion',this)">🥇 Premiación</button>
-  <button class="tab-btn" onclick="switchTab('pago',this)">💰 Pago</button>
   <button class="tab-btn" onclick="switchTab('exportar',this)">📊 Excel</button>
-  <button class="tab-btn" id="tabFaseBtn" style="display:none;" onclick="switchTab('fase',this)">🏆 Fase Final</button>
+  <button class="tab-btn" id="tabFaseBtn" style="display:none;" onclick="switchTab('fase',this)">🏆 Quiniela Fase Final</button>
 </div>
 
 <!-- QUINIELA -->
@@ -380,13 +379,13 @@
       <div class="pending-title">Premiación</div>
       <div class="pending-msg" style="text-align:left;">
         <div style="margin-bottom:20px;">
-          <div style="font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">🏆 Sistema de Puntos</div>
+          <div style="font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">⚽ Fase de Grupos — Sistema de Puntos</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--cream);border-radius:8px;">
-              <span style="font-weight:700;">⚽ Resultado exacto</span>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#C8E6C9;border-radius:8px;">
+              <span style="font-weight:700;">⭐ Resultado exacto</span>
               <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--navy);">7 pts</span>
             </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--cream);border-radius:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#DCEDC8;border-radius:8px;">
               <span style="font-weight:700;">✅ Ganador correcto</span>
               <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--navy);">2 pts</span>
             </div>
@@ -405,8 +404,59 @@
           </div>
         </div>
 
-        <div>
-          <div style="font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">💰 Distribución del Pozo</div>
+        <div style="margin-bottom:24px;">
+          <div style="font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">🏆 Fase Final — Sistema de Puntos</div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#C8E6C9;border-radius:8px;">
+              <span style="font-weight:700;">⭐ Score exacto (90 min + tiempo extra)</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--navy);">3 pts</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#DCEDC8;border-radius:8px;">
+              <span style="font-weight:700;">✅ Ganador correcto (sin importar score)</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--navy);">1 pt</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FFF9C4;border-radius:8px;">
+              <span style="font-weight:700;">⚡ Penales: acertar empate + ganador en penales</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--navy);">2 pts</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:var(--cream);border-radius:8px;">
+              <span style="font-weight:700;">🔄 Equipo que pasa a la siguiente ronda</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--navy);">3 pts</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:rgba(13,31,78,0.05);border-radius:8px;">
+              <span style="font-weight:700;color:rgba(13,31,78,0.4);">❌ Fallo total</span>
+              <span style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:rgba(13,31,78,0.3);">0 pts</span>
+            </div>
+          </div>
+          <div style="margin-top:16px;background:var(--cream);border-radius:10px;padding:14px 16px;">
+            <div style="font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--navy);text-transform:uppercase;margin-bottom:10px;">📖 Ejemplos</div>
+            <div style="display:flex;flex-direction:column;gap:10px;font-size:12px;">
+              <div style="background:white;border-radius:8px;padding:10px 12px;">
+                <div style="color:rgba(13,31,78,0.5);margin-bottom:2px;">Tu quiniela: <strong>México 1 vs España 0</strong></div>
+                <div style="color:rgba(13,31,78,0.5);margin-bottom:6px;">Resultado: <strong>México 2 vs Italia 1</strong></div>
+                <div style="font-weight:800;color:var(--navy);">✅ Ganador correcto → <span style="color:var(--gold);">1 punto</span></div>
+              </div>
+              <div style="background:white;border-radius:8px;padding:10px 12px;">
+                <div style="color:rgba(13,31,78,0.5);margin-bottom:2px;">Tu quiniela: <strong>México 1 (pen) vs España 1</strong></div>
+                <div style="color:rgba(13,31,78,0.5);margin-bottom:6px;">Resultado: <strong>México 1 (pen) vs Italia 1</strong></div>
+                <div style="font-weight:800;color:var(--navy);">⚡ Empate + ganador en penales → <span style="color:var(--gold);">2 puntos</span></div>
+              </div>
+              <div style="background:white;border-radius:8px;padding:10px 12px;">
+                <div style="color:rgba(13,31,78,0.5);margin-bottom:2px;">Tu quiniela: <strong>México 1 (pen) vs España 1</strong></div>
+                <div style="color:rgba(13,31,78,0.5);margin-bottom:6px;">Resultado: <strong>México 1 (pen) vs Italia 1</strong></div>
+                <div style="font-weight:800;color:var(--navy);">⭐ Score exacto + penales → <span style="color:var(--gold);">3 puntos</span></div>
+              </div>
+              <div style="background:white;border-radius:8px;padding:10px 12px;border-left:3px solid var(--gold);">
+                <div style="font-weight:800;color:var(--navy);margin-bottom:4px;">🔄 Bonus por clasificados</div>
+                <div style="color:rgba(13,31,78,0.6);font-size:11px;">Por cada equipo que pusiste en tu bracket que realmente pasó a esa ronda → <strong>3 pts extra</strong>, sin importar contra quién jugó.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-bottom:20px;"><div style="font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;"></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="font-family:'Teko',sans-serif;font-size:16px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;">💰 Distribución del Pozo</div>
           <div style="display:flex;flex-direction:column;gap:8px;">
             <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;background:linear-gradient(135deg,rgba(201,151,42,0.15),rgba(201,151,42,0.05));border:1.5px solid rgba(201,151,42,0.3);border-radius:8px;">
               <span style="font-weight:800;">🥇 1er lugar</span>
@@ -437,28 +487,38 @@
   </div>
 </div>
 
-<!-- PAGO -->
-<div id="tab-pago" class="tab-content">
-  <div class="main-wrap" style="text-align:center;">
-    <div class="pending-card">
-      <span class="pending-icon">💳</span>
-      <div class="pending-title">Pago</div>
-      <div class="pending-msg">Pendiente hasta la segunda semana de mayo.<br><br>Aquí aparecerá la información de cómo realizar tu pago para participar.</div>
-    </div>
-  </div>
 </div>
-
 <!-- FASE FINAL (hidden until activated) -->
 <div id="tab-fase" class="tab-content">
   <div class="main-wrap">
 
-    <!-- PLAYER SELECTOR -->
-    <div style="background:var(--white);border-radius:10px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(13,31,78,0.07);border:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-      <span style="font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;">✏️ Llenar como:</span>
-      <select id="faseActivePlayerSelect" style="flex:1;min-width:150px;padding:8px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--navy);background:var(--cream);outline:none;" onchange="setFaseActivePlayer(this.value)">
-        <option value="">— Selecciona tu nombre —</option>
-      </select>
-      <span id="faseSaveStatus" style="font-size:11px;color:rgba(13,31,78,0.4);"></span>
+    <!-- PLAYER SELECTOR FASE 2 -->
+    <div id="fasePlayerPickerDiv" style="background:var(--white);border-radius:10px;padding:14px 18px;margin-bottom:16px;box-shadow:0 2px 8px rgba(13,31,78,0.07);border:1px solid var(--border);">
+      <div style="font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:12px;">⚽ Toca tu nombre para llenar tu bracket</div>
+      <div id="faseChipsDiv" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+    </div>
+    <!-- ACTIVE PLAYER BANNER -->
+    <div id="faseActiveBanner" style="display:none;background:var(--navy);border-radius:10px;padding:12px 18px;margin-bottom:16px;display:none;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold-light);letter-spacing:1px;" id="faseActiveNameLabel">—</div>
+        <div style="font-size:11px;color:rgba(255,255,255,0.4);" id="faseSaveStatus">Llenando bracket...</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <button onclick="finalizarFase2()" style="background:var(--gold);color:var(--navy);border:none;padding:8px 16px;font-family:'Teko',sans-serif;font-size:16px;letter-spacing:1px;border-radius:8px;cursor:pointer;">✅ Finalizar Fase 2</button>
+        <button onclick="salirFase2()" style="background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);border:none;padding:8px 12px;font-family:'Teko',sans-serif;font-size:14px;border-radius:8px;cursor:pointer;">✕ Salir</button>
+      </div>
+    </div>
+    <!-- CONFIRM MODAL -->
+    <div id="faseConfirmModal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;align-items:center;justify-content:center;">
+      <div style="background:var(--white);border-radius:16px;padding:28px;max-width:320px;width:90%;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+        <div style="font-size:32px;margin-bottom:8px;">👋</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--navy);letter-spacing:1px;margin-bottom:6px;">¿Eres <span id="faseConfirmName"></span>?</div>
+        <div style="font-size:13px;color:rgba(13,31,78,0.5);margin-bottom:20px;">Solo tú puedes llenar tu bracket</div>
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <button onclick="confirmarFase2Player()" style="background:var(--navy);color:var(--white);border:none;padding:10px 24px;font-family:'Teko',sans-serif;font-size:18px;border-radius:8px;cursor:pointer;">✅ Sí, soy yo</button>
+          <button onclick="cancelarFase2Confirm()" style="background:var(--cream);color:var(--navy);border:1.5px solid var(--border);padding:10px 16px;font-family:'Teko',sans-serif;font-size:18px;border-radius:8px;cursor:pointer;">No</button>
+        </div>
+      </div>
     </div>
 
     <!-- GRUPOS RESUMEN -->
@@ -481,13 +541,7 @@
       </div>
     </div>
 
-    <!-- TABLA GENERAL -->
-    <div style="background:var(--white);border-radius:12px;overflow:hidden;box-shadow:0 2px 12px rgba(13,31,78,0.08);border:1px solid var(--border);">
-      <div style="background:var(--navy);padding:14px 20px;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold-light);letter-spacing:2px;">🏆 Tabla General — Fase 1 + Fase 2</div>
-      </div>
-      <div id="faseLeaderboardTable" style="padding:0;"></div>
-    </div>
+
 
   </div>
 </div>
@@ -501,9 +555,11 @@
       <div style="background:var(--white);border-radius:12px;padding:24px;box-shadow:0 2px 12px rgba(13,31,78,0.08);border:1px solid var(--border);text-align:center;">
         <div style="font-size:36px;margin-bottom:8px;">🔐</div>
         <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:2px;color:var(--navy);margin-bottom:6px;">Área de Administrador</div>
-        <div style="font-size:13px;color:rgba(13,31,78,0.45);margin-bottom:18px;">Toca los íconos en orden</div>
-        <div id="adminIconGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;max-width:300px;margin:0 auto 16px;"></div>
-        <div id="adminIconSequence" style="display:flex;justify-content:center;gap:8px;margin-bottom:10px;min-height:32px;"></div>
+        <div style="font-size:13px;color:rgba(13,31,78,0.45);margin-bottom:18px;">Ingresa la contraseña</div>
+        <div style="display:flex;gap:8px;max-width:280px;margin:0 auto 10px;">
+          <input type="password" id="adminPassInput" placeholder="Contraseña..." style="flex:1;background:var(--cream);border:1.5px solid var(--border);color:var(--navy);padding:10px 14px;font-size:16px;font-family:'Nunito',sans-serif;border-radius:8px;outline:none;letter-spacing:4px;" onkeydown="if(event.key==='Enter')adminLogin()"/>
+          <button onclick="adminLogin()" style="background:var(--navy);color:var(--white);border:none;padding:10px 18px;font-family:'Teko',sans-serif;font-size:18px;border-radius:8px;cursor:pointer;">→</button>
+        </div>
         <div id="adminLoginError" style="color:var(--red);font-size:12px;font-weight:700;min-height:16px;"></div>
       </div>
     </div>
@@ -517,8 +573,14 @@
           <div class="export-ball">📊</div>
           <div class="export-title">Descargar Quiniela</div>
           <div class="export-sub">Genera el Excel con todos los pronósticos en tiempo real desde Firebase.</div>
+          <div id="unlockFase2Panel" style="display:none;margin-top:16px;background:var(--cream);border-radius:10px;padding:14px;">
+            <div style="font-family:'Teko',sans-serif;font-size:14px;letter-spacing:2px;color:var(--navy);margin-bottom:10px;">🔓 DESBLOQUEAR JUGADOR — FASE 2</div>
+            <div id="unlockFase2List" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+          </div>
           <div style="margin-top:12px;display:flex;flex-wrap:wrap;gap:8px;">
             <button onclick="runAutoFinalize()" style="background:var(--green-light);color:var(--white);border:none;padding:10px 20px;font-family:'Teko',sans-serif;font-size:17px;letter-spacing:1px;border-radius:8px;cursor:pointer;">✅ Auto-finalizar (72/72)</button>
+            <button onclick="clearAllPreds2()" style="background:#C62828;color:white;border:none;padding:10px 20px;font-family:'Teko',sans-serif;font-size:17px;letter-spacing:1px;border-radius:8px;cursor:pointer;">🗑 Borrar Fase 2 (pruebas)</button>
+            <button onclick="toggleUnlockFase2Panel()" style="background:var(--gold);color:var(--navy);border:none;padding:10px 20px;font-family:'Teko',sans-serif;font-size:17px;letter-spacing:1px;border-radius:8px;cursor:pointer;">🔓 Desbloquear Fase 2</button>
             <button onclick="openFaseAdmin()" style="background:var(--gold);color:var(--navy);border:none;padding:10px 20px;font-family:'Teko',sans-serif;font-size:17px;letter-spacing:1px;border-radius:8px;cursor:pointer;">🏆 Configurar Fase Final</button>
           </div>
           <button class="btn-export" onclick="exportExcel()">⬇ Descargar Excel</button>
@@ -601,21 +663,21 @@
   <div class="modal-box" style="max-width:500px;">
     <div style="font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;color:var(--navy);margin-bottom:16px;">🏆 Configurar Fase Final</div>
 
-    <!-- Real advancers -->
     <div style="margin-bottom:16px;">
-      <div style="font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Equipos clasificados reales (separados por coma)</div>
-      <textarea id="realAdvancersInput" rows="4" style="width:100%;padding:10px;border:1.5px solid var(--border);border-radius:8px;font-family:'Nunito',sans-serif;font-size:12px;color:var(--navy);background:var(--cream);outline:none;resize:vertical;" placeholder="🇲🇽 México, 🇰🇷 Corea del Sur, ..."></textarea>
-      <button onclick="saveRealAdvancers()" style="margin-top:6px;background:var(--navy);color:var(--white);border:none;padding:8px 16px;font-family:'Teko',sans-serif;font-size:16px;border-radius:6px;cursor:pointer;">Guardar Clasificados</button>
-    </div>
-
-    <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:16px;">
       <div style="font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Mostrar pestaña Fase Final a todos</div>
       <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:700;color:var(--navy);">
         <input type="checkbox" id="showFaseToggle" onchange="toggleFaseTab(this.checked)" style="width:16px;height:16px;accent-color:var(--navy);"/>
-        Activar pestaña 🏆 Fase Final para todos los usuarios
+        Activar pestaña 🏆 Quiniela Fase Final para todos los usuarios
       </label>
     </div>
 
+    <div style="border-top:1px solid var(--border);padding-top:16px;margin-bottom:16px;">
+      <div style="font-family:'Teko',sans-serif;font-size:13px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;">Mostrar brackets de todos</div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:14px;font-weight:700;color:var(--navy);">
+        <input type="checkbox" id="showBracketsToggle" onchange="toggleShowBrackets(this.checked)" style="width:16px;height:16px;accent-color:var(--navy);"/>
+        Activar — todos pueden ver el bracket de los demás
+      </label>
+    </div>
     <div class="modal-btns">
       <button class="btn-mc" onclick="closeAllModals()">Cerrar</button>
     </div>
@@ -984,15 +1046,47 @@ function renderProgressBanner() {
   // Show viewing banner if looking at someone else's quiniela
   if (viewIdx !== null && viewIdx !== activeIdx) {
     const vp = players[viewIdx];
+    // Calculate summary for viewed player
+    let vExactos = 0, vGanadores = 0, vResultsEntered = false;
+    MATCHES.forEach(m => {
+      const real = realResults[m.id];
+      const pred = vp.preds?.[m.id];
+      if(!real || real.h === '' || real.h === undefined) return;
+      if(!pred || pred.h === '' || pred.h === undefined) return;
+      vResultsEntered = true;
+      const rh=parseInt(real.h),ra=parseInt(real.a);
+      const ph=parseInt(pred.h),pa=parseInt(pred.a);
+      if(ph===rh&&pa===ra) vExactos++;
+      else { const rw=rh>ra?'h':ra>rh?'a':'d'; const pw=ph>pa?'h':pa>ph?'a':'d'; if(rw===pw) vGanadores++; }
+    });
+    const vTotal = calcPoints(vp);
+    const summaryRow = (icon, label, count, mult, pts) =>
+      `<div style="display:flex;align-items:center;gap:8px;padding:6px 16px;border-bottom:1px solid rgba(13,31,78,0.05);">
+        <span style="font-size:13px;width:20px;">${icon}</span>
+        <span style="flex:1;font-size:11px;color:rgba(13,31,78,0.5);">${label}</span>
+        <span style="font-size:13px;font-weight:800;color:var(--navy);min-width:20px;text-align:right;">${count}</span>
+        <span style="font-size:10px;color:rgba(13,31,78,0.3);">× ${mult} =</span>
+        <span style="font-size:13px;font-weight:800;color:var(--gold);min-width:48px;text-align:right;">${pts} pts</span>
+      </div>`;
+    const vSummary = vResultsEntered ? `<div style="border-top:1px solid rgba(13,31,78,0.07);">
+      ${summaryRow('🏆','Scores exactos',vExactos,7,vExactos*7)}
+      ${summaryRow('✅','Ganador correcto',vGanadores,2,vGanadores*2)}
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 16px;background:rgba(13,31,78,0.03);">
+        <span style="font-size:13px;width:20px;"></span>
+        <span style="flex:1;font-size:11px;font-weight:800;color:var(--navy);">Total Fase 1</span>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);">${vTotal} pts</span>
+      </div>
+    </div>` : '';
     banner.style.display = 'block';
     banner.innerHTML = `<div class="progress-banner" style="border-color:rgba(201,151,42,0.3);">
-      <div style="display:flex;align-items:center;gap:10px;">
+      <div style="display:flex;align-items:center;gap:10px;padding:12px 16px;">
         <span style="font-size:18px;">👁</span>
         <div>
           <div style="font-family:'Teko',sans-serif;font-size:18px;letter-spacing:1px;color:var(--navy);">Viendo quiniela de ${vp.name}</div>
-          <div style="font-size:12px;color:rgba(13,31,78,0.4);">Solo lectura — toca ⚽ Quiniela para editar la tuya</div>
+          <div style="font-size:12px;color:rgba(13,31,78,0.4);">Solo lectura</div>
         </div>
       </div>
+      ${vSummary}
     </div>`;
     return;
   }
@@ -1001,6 +1095,48 @@ function renderProgressBanner() {
   const filled = countFilled(activeIdx);
   const pct = Math.round((filled / 72) * 100);
   banner.style.display = 'block';
+  // Calculate summary stats
+  const dispIdx = viewIdx !== null ? viewIdx : activeIdx;
+  const dp = players[dispIdx];
+  let exactos = 0, ganadores = 0;
+  let resultsEntered = false;
+  MATCHES.forEach(m => {
+    const real = realResults[m.id];
+    const pred = dp.preds?.[m.id];
+    if(!real || real.h === '' || real.h === undefined) return;
+    if(!pred || pred.h === '' || pred.h === undefined) return;
+    resultsEntered = true;
+    const rh=parseInt(real.h),ra=parseInt(real.a);
+    const ph=parseInt(pred.h),pa=parseInt(pred.a);
+    if(ph===rh&&pa===ra) exactos++;
+    else {
+      const rw=rh>ra?'h':ra>rh?'a':'d';
+      const pw=ph>pa?'h':pa>ph?'a':'d';
+      if(rw===pw) ganadores++;
+    }
+  });
+  const ptsGanadores = ganadores * 2;
+  const ptsExactos = exactos * 7;
+  const totalPts = calcPoints(dp);
+
+  const ownRow = (icon, label, count, mult, pts) =>
+    `<div style="display:flex;align-items:center;gap:8px;padding:6px 16px;border-bottom:1px solid rgba(13,31,78,0.05);">
+      <span style="font-size:13px;width:20px;">${icon}</span>
+      <span style="flex:1;font-size:11px;color:rgba(13,31,78,0.5);">${label}</span>
+      <span style="font-size:13px;font-weight:800;color:var(--navy);min-width:20px;text-align:right;">${count}</span>
+      <span style="font-size:10px;color:rgba(13,31,78,0.3);">× ${mult} =</span>
+      <span style="font-size:13px;font-weight:800;color:var(--gold);min-width:48px;text-align:right;">${pts} pts</span>
+    </div>`;
+  const summaryHtml = resultsEntered ? `<div style="border-top:1px solid rgba(13,31,78,0.07);">
+    ${ownRow('🏆','Scores exactos',exactos,7,ptsExactos)}
+    ${ownRow('✅','Ganador correcto',ganadores,2,ptsGanadores)}
+    <div style="display:flex;align-items:center;gap:8px;padding:7px 16px;background:rgba(13,31,78,0.03);">
+      <span style="font-size:13px;width:20px;"></span>
+      <span style="flex:1;font-size:11px;font-weight:800;color:var(--navy);">Total Fase 1</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--gold);">${totalPts} pts</span>
+    </div>
+  </div>` : '';
+
   banner.innerHTML = `<div class="progress-banner">
     <div class="progress-top">
       <div class="progress-name">⚽ ${p.name}</div>
@@ -1017,6 +1153,7 @@ function renderProgressBanner() {
           ? `<span style="font-size:13px;font-weight:700;color:var(--red);">🔒 Quiniela cerrada</span>`
           : `<button class="btn-finalizar" onclick="openFinalizeModal()">✅ Finalizar quiniela</button>`}
     </div>
+    ${summaryHtml}
   </div>`;
 }
 
@@ -1219,6 +1356,57 @@ function switchTabByName(name) {
   if (btn) window.switchTab(name, btn);
 }
 
+window.clearAllPreds2 = async function() {
+  if(!adminUnlocked){showToast('❌ Admin requerido');return;}
+  if(!confirm('¿Borrar preds2 de TODOS los jugadores? Esto borra solo fase final, no la fase 1.')) return;
+  let count = 0;
+  for(const p of players) {
+    if(p.preds2 && Object.keys(p.preds2).length > 0) {
+      try {
+        await updateDoc(doc(playersCol, p.id), { preds2: {} });
+        p.preds2 = {};
+        count++;
+      } catch(e) { console.error('Error clearing preds2 for', p.name, e); }
+    }
+  }
+  showToast('✅ Fase 2 borrada de ' + count + ' jugadores');
+};
+
+window.toggleUnlockFase2Panel = function() {
+  const panel = document.getElementById('unlockFase2Panel');
+  if(!panel) return;
+  const showing = panel.style.display !== 'none';
+  panel.style.display = showing ? 'none' : 'block';
+  if(!showing) renderUnlockFase2List();
+};
+
+function renderUnlockFase2List() {
+  const list = document.getElementById('unlockFase2List');
+  if(!list) return;
+  const done2Players = players.filter(p => p.done2);
+  if(!done2Players.length) {
+    list.innerHTML = '<div style="font-size:12px;color:rgba(13,31,78,0.5);">Ningún jugador ha finalizado Fase 2 aún</div>';
+    return;
+  }
+  list.innerHTML = done2Players.map(p =>
+    `<div style="display:flex;align-items:center;gap:8px;background:white;border-radius:8px;padding:6px 10px;border:1px solid var(--border);">
+      <span style="font-size:12px;font-weight:700;color:var(--navy);">✅ ${p.name}</span>
+      <button onclick="unlockFase2Player('${p.id}','${p.name}')" style="background:var(--navy);color:white;border:none;padding:3px 10px;font-family:'Teko',sans-serif;font-size:13px;border-radius:5px;cursor:pointer;">🔓 Desbloquear</button>
+    </div>`
+  ).join('');
+}
+
+window.unlockFase2Player = async function(id, name) {
+  if(!confirm('¿Desbloquear Fase 2 de ' + name + '?')) return;
+  try {
+    await updateDoc(doc(playersCol, id), { done2: false });
+    const p = players.find(x => x.id === id);
+    if(p) p.done2 = false;
+    showToast('✅ ' + name + ' desbloqueado en Fase 2');
+    renderUnlockFase2List();
+  } catch(e) { showToast('⚠ Error: ' + e.message); }
+};
+
 window.runAutoFinalize = async function() {
   if (!adminUnlocked) { showToast('❌ Debes entrar como admin primero'); return; }
   showToast('⟳ Finalizando quinielas completas...');
@@ -1356,51 +1544,21 @@ async function autoFinalizeComplete() {
   return count;
 }
 
-// Icon-based admin login: secret sequence of icons
-const ADMIN_ICON_SEQUENCE = ['⚽','🏆','🇲🇽','⭐']; // the correct sequence
-const ADMIN_ALL_ICONS = ['⚽','🏆','🇲🇽','⭐','🎯','🔥','⚡','🥅','🏅','💚','🎉','🦅','🟡','🔵','🟢','🟣'];
-let adminEnteredSequence = [];
-
-function renderAdminIconGrid() {
-  const grid = document.getElementById('adminIconGrid');
-  if (!grid) return;
-  grid.innerHTML = ADMIN_ALL_ICONS.map((icon, i) =>
-    `<button onclick="adminIconTap('${icon}')" style="background:var(--cream);border:1.5px solid var(--border);border-radius:10px;padding:14px 0;font-size:24px;cursor:pointer;transition:all 0.15s;" onmousedown="this.style.transform='scale(0.9)'" onmouseup="this.style.transform='scale(1)'">${icon}</button>`
-  ).join('');
-}
-
-window.adminIconTap = function(icon) {
-  adminEnteredSequence.push(icon);
-  renderAdminSequenceDisplay();
-  if (adminEnteredSequence.length === ADMIN_ICON_SEQUENCE.length) {
-    setTimeout(() => {
-      const correct = adminEnteredSequence.every((ic, i) => ic === ADMIN_ICON_SEQUENCE[i]);
-      if (correct) {
-        adminUnlocked = true;
-        document.getElementById('adminLoginPanel').style.display = 'none';
-        document.getElementById('adminPanel').style.display = 'block';
-        renderAdminMatchGrid();
-      } else {
-        document.getElementById('adminLoginError').textContent = '❌ Secuencia incorrecta, intenta de nuevo';
-        adminEnteredSequence = [];
-        renderAdminSequenceDisplay();
-      }
-    }, 200);
+window.adminLogin = function() {
+  const inp = document.getElementById('adminPassInput');
+  if (!inp) return;
+  if (inp.value === '123R') {
+    adminUnlocked = true;
+    document.getElementById('adminLoginPanel').style.display = 'none';
+    document.getElementById('adminPanel').style.display = 'block';
+    renderAdminMatchGrid();
+  } else {
+    document.getElementById('adminLoginError').textContent = '❌ Contraseña incorrecta';
+    inp.value = '';
   }
 };
 
-function renderAdminSequenceDisplay() {
-  const el = document.getElementById('adminIconSequence');
-  if (!el) return;
-  const dots = ADMIN_ICON_SEQUENCE.map((_, i) =>
-    adminEnteredSequence[i] ? adminEnteredSequence[i] : '⚪'
-  );
-  el.innerHTML = dots.map(d => `<span style="font-size:20px;">${d}</span>`).join('');
-}
-
-window.adminLogin = function() {
-  // Legacy fallback - kept for compatibility, not used by new UI
-};
+function renderAdminIconGrid() {} // no-op, kept for compatibility
 
 // ── FIRESTORE: results collection ──
 const resultsDoc = doc(db, 'meta', 'results');
@@ -1414,6 +1572,8 @@ onSnapshot(resultsDoc, (snap) => {
   renderMatchResultsDisplay();
   updateLateAlert(realResults._lateAlert || false);
   updateFaseTabVisibility(realResults._showFase || false);
+  const showBracketsToggle = document.getElementById('showBracketsToggle');
+  if(showBracketsToggle) showBracketsToggle.checked = !!realResults._showBrackets;
   if (document.getElementById('tab-fase')?.classList.contains('active')) renderFaseTab();
   if (adminUnlocked) renderAdminMatchGrid();
 }, err => console.log('No results yet'));
@@ -2198,8 +2358,12 @@ function getBest8Thirds() {
 function resolveCode(key) {
   const m = key.match(/^([123])([A-L])$/);
   if(!m) return key;
-  const s = calcGroupStandings(m[2]);
-  return s[parseInt(m[1])-1]?.team || `${key}(TBD)`;
+  const gk = m[2];
+  const s = calcGroupStandings(gk);
+  // Only resolve if group is complete (all 3 matchdays played)
+  const groupComplete = s.every(t => t.played === 3);
+  if(!groupComplete) return '?';
+  return s[parseInt(m[1])-1]?.team || '?';
 }
 
 function buildR32() {
@@ -2223,24 +2387,87 @@ const ROUND_NAMES = {r32:'1/32',r16:'1/16',qf:'Cuartos',sf:'Semis',f:'Final'};
 const ROUND_MATCH_COUNT = {r32:16,r16:8,qf:4,sf:2,f:1};
 
 let faseActiveIdx = null;
+let fasePendingIdx = null; // idx of player pending confirmation
 let faseSaveTimeout = null;
 
-window.setFaseActivePlayer = function(id) {
-  faseActiveIdx = id ? players.findIndex(p=>p.id===id) : null;
+function updateFaseActivePlayerSelector() {
+  // Render chips instead of dropdown
+  const chipsDiv = document.getElementById('faseChipsDiv');
+  if(!chipsDiv) return;
+  chipsDiv.innerHTML = players.map((p, i) => {
+    const done2 = p.done2;
+    const isActive = i === faseActiveIdx;
+    let bg = done2 ? 'rgba(76,175,80,0.15)' : 'rgba(13,31,78,0.06)';
+    let border = done2 ? 'rgba(76,175,80,0.5)' : 'rgba(13,31,78,0.15)';
+    let color = done2 ? '#2E7D32' : 'var(--navy)';
+    if(isActive) { bg='var(--gold)'; border='var(--gold)'; color='var(--navy)'; }
+    return `<div onclick="tapFase2Player(${i})" style="cursor:pointer;background:${bg};border:1.5px solid ${border};color:${color};border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;white-space:nowrap;">${done2?'✅ ':''}${p.name}</div>`;
+  }).join('');
+  // Show/hide picker vs banner
+  const picker = document.getElementById('fasePlayerPickerDiv');
+  const banner = document.getElementById('faseActiveBanner');
+  if(faseActiveIdx !== null) {
+    if(picker) picker.style.display = 'none';
+    if(banner) { banner.style.display = 'flex'; }
+    const label = document.getElementById('faseActiveNameLabel');
+    if(label) label.textContent = players[faseActiveIdx].name;
+  } else {
+    if(picker) picker.style.display = 'block';
+    if(banner) banner.style.display = 'none';
+  }
+}
+
+window.tapFase2Player = function(idx) {
+  if(faseActiveIdx !== null) return; // already logged in
+  if(players[idx].done2) {
+    showToast('✅ ' + players[idx].name + ' ya finalizó su Fase 2');
+    return;
+  }
+  fasePendingIdx = idx;
+  const modal = document.getElementById('faseConfirmModal');
+  const nameEl = document.getElementById('faseConfirmName');
+  if(nameEl) nameEl.textContent = players[idx].name;
+  if(modal) modal.style.display = 'flex';
+};
+
+window.confirmarFase2Player = function() {
+  faseActiveIdx = fasePendingIdx;
+  fasePendingIdx = null;
+  document.getElementById('faseConfirmModal').style.display = 'none';
+  updateFaseActivePlayerSelector();
   renderBracket();
 };
 
-function updateFaseActivePlayerSelector() {
-  const sel = document.getElementById('faseActivePlayerSelect');
-  if(!sel) return;
-  const cur = faseActiveIdx!==null ? players[faseActiveIdx].id : '';
-  sel.innerHTML = '<option value="">— Selecciona tu nombre —</option>' +
-    players.map(p=>`<option value="${p.id}"${p.id===cur?' selected':''}>${p.name}</option>`).join('');
-}
+window.cancelarFase2Confirm = function() {
+  fasePendingIdx = null;
+  document.getElementById('faseConfirmModal').style.display = 'none';
+};
+
+window.salirFase2 = function() {
+  faseActiveIdx = null;
+  updateFaseActivePlayerSelector();
+  renderBracket();
+};
+
+window.finalizarFase2 = async function() {
+  if(faseActiveIdx === null) return;
+  if(!confirm('¿Finalizar tu Fase 2? Tu bracket quedará bloqueado.')) return;
+  const p = players[faseActiveIdx];
+  try {
+    await updateDoc(doc(playersCol, p.id), { done2: true });
+    p.done2 = true;
+    showToast('✅ Fase 2 finalizada para ' + p.name);
+    faseActiveIdx = null;
+    updateFaseActivePlayerSelector();
+    renderBracket();
+    renderFaseLeaderboard();
+  } catch(e) { showToast('⚠ Error: ' + e.message); }
+};
 
 // Save without re-rendering (cursor stays!)
 window.saveFasePred = async function(round, matchId, side, val) {
   if(faseActiveIdx===null){showToast('⚠ Selecciona tu nombre primero');return;}
+  if(players[faseActiveIdx]?.done2){showToast('🔒 Tu Fase 2 está finalizada');return;}
   const p = players[faseActiveIdx];
   if(!p.preds2) p.preds2={};
   if(!p.preds2[round]) p.preds2[round]={};
@@ -2327,6 +2554,8 @@ function renderBracket() {
   const wrap = document.getElementById('bracketSVGWrap');
   if(!wrap) return;
   const tree = buildBracketTree();
+  // Show own preds if active, or show other's preds only if admin has enabled showBrackets
+  const showAllBrackets = !!realResults._showBrackets;
   const player = faseActiveIdx !== null ? players[faseActiveIdx] : null;
 
   function resolveTeam(round, matchIdx, side) {
@@ -2365,26 +2594,28 @@ function renderBracket() {
       else{bg='#FFCDD2';border='#E57373';}
     }
 
-    const inp = `width:24px;height:19px;border:1.5px solid var(--border);border-radius:3px;text-align:center;font-size:12px;font-weight:700;font-family:'Bebas Neue',sans-serif;color:var(--navy);background:var(--cream);outline:none;flex-shrink:0;`;
+    const isTBD = homeTeam.includes('TBD') || awayTeam.includes('TBD') || homeTeam === '?' || awayTeam === '?';
+    const inp = `width:24px;height:19px;border:1.5px solid var(--border);border-radius:3px;text-align:center;font-size:12px;font-weight:700;font-family:'Bebas Neue',sans-serif;color:var(--navy);background:var(--cream);outline:none;flex-shrink:0;${isTBD?'opacity:0.35;':''}`;
 
     const row = (team, side, val) => `<div style="display:flex;align-items:center;gap:3px;padding:2px 5px;height:26px;
         ${side==='home'?'border-bottom:1px solid rgba(13,31,78,0.07);':''}
-        cursor:${isDraw?'pointer':'default'};
+        cursor:${isDraw&&!isTBD?'pointer':'default'};
         background:${isDraw&&pr.pen_winner===side?'rgba(201,151,42,0.1)':''};"
-        onclick="${isDraw?`savePenWinner('${round}','${m.id}','${side}')`:''}" >
-        <span style="flex:1;font-size:9px;font-weight:700;color:${isDraw&&pr.pen_winner===side?'var(--gold)':'var(--navy)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${team}">
-          ${isDraw&&pr.pen_winner===side?'🏆 ':''}${team}
+        onclick="${isDraw&&!isTBD?`savePenWinner('${round}','${m.id}','${side}')`:''}" >
+        <span style="flex:1;font-size:9px;font-weight:700;color:${team==='?'||team.includes('TBD')?'rgba(13,31,78,0.3)':isDraw&&pr.pen_winner===side?'var(--gold)':'var(--navy)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:${team==='?'||team.includes('TBD')?'italic':'normal'};" title="${team}">
+          ${isDraw&&pr.pen_winner===side?'🏆 ':''}${team==='?'||team.includes('TBD')?'⏳ Por definir':team}
         </span>
-        <input style="${inp}" type="tel" inputmode="numeric" value="${val}" placeholder="–" maxlength="2"
+        <input style="${inp}" type="tel" inputmode="numeric" value="${isTBD?'':val}" placeholder="–" maxlength="2"
+          ${isTBD?'disabled':''}
           onchange="saveFasePred('${round}','${m.id}','${side}',this.value)"
           oninput="if(parseInt(this.value)>20)this.value=20;"
           onclick="event.stopPropagation()"/>
       </div>`;
 
-    return `<div style="background:${bg};border:1.5px solid ${border};border-radius:6px;overflow:hidden;width:${ROUND_W}px;">
+    return `<div style="background:${isTBD?'rgba(13,31,78,0.02)':bg};border:1.5px solid ${isTBD?'rgba(13,31,78,0.1)':border};border-radius:6px;overflow:hidden;width:${ROUND_W}px;${isTBD?'opacity:0.7;':''}">
       ${row(homeTeam,'home',hv)}
       ${row(awayTeam,'away',av)}
-      ${isDraw?`<div style="background:#fff8e1;padding:1px 5px;font-size:7.5px;color:var(--gold);font-weight:800;letter-spacing:0.5px;text-align:center;">PENALES · Click en ganador</div>`:''}
+      ${isDraw&&!isTBD?`<div style="background:#fff8e1;padding:1px 5px;font-size:7.5px;color:var(--gold);font-weight:800;letter-spacing:0.5px;text-align:center;">PENALES · Click en ganador</div>`:''}
     </div>`;
   }
 
@@ -2394,6 +2625,18 @@ function renderBracket() {
   // Pass 1: build match positions based on round and index
   // In round r, match i is centered at: (i + 0.5) / count * totalHeight
   // where totalHeight is fixed
+
+  // Show status message
+  const groupsDone = Object.keys(GROUP_MEMBERS).filter(gk => calcGroupStandings(gk).every(t => t.played === 3)).length;
+  const statusEl = document.getElementById('bracketStatus');
+  if(statusEl) {
+    if(groupsDone < 12) statusEl.textContent = `⏳ ${groupsDone}/12 grupos completados — los cruces se confirman el 27 jun`;
+    else {
+      const b8 = getBest8Thirds();
+      const key = b8.map(t=>t.group).sort().join('');
+      statusEl.textContent = ANNEX_C[key] ? '✅ Bracket confirmado' : `⚠ Combinación ${key} no encontrada`;
+    }
+  }
 
   const TOTAL_H = 16 * (MATCH_H + 4) + 15 * 4 + HEADER_H + 16; // enough for 16 matches
   const CON_W = 24;
@@ -2601,6 +2844,13 @@ window.openFaseAdmin=function(){
   if(t) t.checked=!!realResults._showFase;
   document.getElementById('modalFaseAdmin').style.display='flex';
 };
+window.toggleShowBrackets = async function(show) {
+  try {
+    await setDoc(resultsDoc, { _showBrackets: show }, { merge:true });
+    showToast(show ? '✅ Brackets visibles para todos' : '🔒 Brackets ocultos');
+  } catch(e) { showToast('⚠ Error: ' + e.message); }
+};
+
 window.toggleFaseTab=async function(show){
   try{
     await setDoc(resultsDoc,{_showFase:show},{merge:true});
