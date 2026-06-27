@@ -824,9 +824,19 @@ onSnapshot(playersCol,
   (snapshot) => {
     const prevActive = activeIdx !== null ? players[activeIdx]?.id : null;
     const prevPlayers = players;
+    // Save local preds2 edits before overwriting from Firestore
+    const localPreds2 = {};
+    if(faseActiveIdx !== null && players[faseActiveIdx]) {
+      localPreds2[players[faseActiveIdx].id] = players[faseActiveIdx].preds2;
+    }
     players = [];
     snapshot.forEach(d => players.push({ id: d.id, ...d.data() }));
     players.sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
+    // Restore local preds2 edits (so unsaved bracket picks aren't lost)
+    Object.keys(localPreds2).forEach(id => {
+      const p = players.find(x => x.id === id);
+      if(p && localPreds2[id]) p.preds2 = localPreds2[id];
+    });
 
     // Auto-activate newly registered player → go straight to quiniela
     if (pendingNewPlayerId) {
@@ -2458,17 +2468,22 @@ window.salirFase2 = function() {
 
 window.finalizarFase2 = async function() {
   if(faseActiveIdx === null) return;
-  if(!confirm('¿Finalizar tu Fase 2? Tu bracket quedará bloqueado.')) return;
+  if(!confirm('¿Finalizar tu Fase 2? Tu bracket quedará bloqueado y guardado.')) return;
   const p = players[faseActiveIdx];
+  const status = document.getElementById('faseSaveStatus');
+  if(status) status.textContent = '⟳ Guardando...';
   try {
-    await updateDoc(doc(playersCol, p.id), { done2: true });
+    // Save preds2 + mark as done2
+    await updateDoc(doc(playersCol, p.id), { preds2: p.preds2 || {}, done2: true });
     p.done2 = true;
-    showToast('✅ Fase 2 finalizada para ' + p.name);
+    showToast('✅ Fase 2 finalizada y guardada para ' + p.name);
     faseActiveIdx = null;
     updateFaseActivePlayerSelector();
     renderBracket();
-    renderFaseLeaderboard();
-  } catch(e) { showToast('⚠ Error: ' + e.message); }
+  } catch(e) { 
+    showToast('⚠ Error: ' + e.message);
+    if(status) status.textContent = '⚠ Error al guardar';
+  }
 };
 
 // Save without re-rendering (cursor stays!)
@@ -2480,7 +2495,13 @@ window.saveFasePred = async function(round, matchId, side, val) {
   if(!p.preds2[round]) p.preds2[round]={};
   if(!p.preds2[round][matchId]) p.preds2[round][matchId]={};
   p.preds2[round][matchId][side] = val===''?'':parseInt(val);
-  // Debounce save to Firestore — NO re-render until after save to avoid cursor loss
+  // Show penales bar if draw, without full re-render
+  const pr = p.preds2[round][matchId];
+  if(pr.h !== '' && pr.h !== undefined && pr.a !== '' && pr.a !== undefined) {
+    const penBar = document.getElementById('penBar_' + matchId);
+    if(penBar) penBar.style.display = parseInt(pr.h)===parseInt(pr.a) ? 'block' : 'none';
+  }
+  // Debounce save to Firestore
   if(faseSaveTimeout) clearTimeout(faseSaveTimeout);
   const status = document.getElementById('faseSaveStatus');
   if(status) status.textContent = '⟳ guardando...';
@@ -2488,24 +2509,37 @@ window.saveFasePred = async function(round, matchId, side, val) {
     try{
       await updateDoc(doc(playersCol,p.id),{preds2:p.preds2});
       if(status) status.textContent = '✓ guardado';
-      // Re-render only after successful save, to propagate winners
-      renderBracket();
     }catch(e){
       if(status) status.textContent='⚠ error';
-      console.error('saveFasePred error:',e);
     }
-  },1000);
+  },1500);
 };
 
 // Determine winner of a match from predictions
 function getPredWinner(round, matchId, player) {
+  // First try DOM inputs (live values)
+  const inp = document.querySelector(`input[data-mid="${matchId}"]`);
+  if(inp) {
+    const card = inp.closest('div[style*=border-radius]');
+    if(card) {
+      const inputs = card.querySelectorAll('input');
+      if(inputs.length >= 2 && inputs[0].value !== '' && inputs[1].value !== '') {
+        const h = parseInt(inputs[0].value), a = parseInt(inputs[1].value);
+        if(h > a) return 'home';
+        if(a > h) return 'away';
+        // Draw — check preds2 for pen_winner
+        const pr = player?.preds2?.[round]?.[matchId];
+        return pr?.pen_winner || null;
+      }
+    }
+  }
+  // Fall back to preds2
   const pr = player?.preds2?.[round]?.[matchId];
   if(!pr||pr.h===''||pr.h===undefined||pr.a===''||pr.a===undefined) return null;
   const h=parseInt(pr.h), a=parseInt(pr.a);
   if(h>a) return 'home';
   if(a>h) return 'away';
-  // Draw -> check pen_winner
-  return pr.pen_winner || null; // 'home' or 'away'
+  return pr.pen_winner || null;
 }
 
 // Get real winner of a match
@@ -2563,6 +2597,11 @@ function resolveSlot(tree, slot, player) {
 function renderBracket() {
   const wrap = document.getElementById('bracketSVGWrap');
   if(!wrap) return;
+  // Save current input values before re-render
+  const savedVals = {};
+  wrap.querySelectorAll('input').forEach(inp => {
+    if(inp.dataset.mid && inp.dataset.side) savedVals[inp.dataset.mid+'_'+inp.dataset.side] = inp.value;
+  });
   const tree = buildBracketTree();
   // Show own preds if active, or show other's preds only if admin has enabled showBrackets
   const showAllBrackets = !!realResults._showBrackets;
@@ -2609,23 +2648,23 @@ function renderBracket() {
 
     const row = (team, side, val) => `<div style="display:flex;align-items:center;gap:3px;padding:2px 5px;height:26px;
         ${side==='home'?'border-bottom:1px solid rgba(13,31,78,0.07);':''}
-        cursor:${isDraw&&!isTBD?'pointer':'default'};
+        cursor:pointer;
         background:${isDraw&&pr.pen_winner===side?'rgba(201,151,42,0.1)':''};"
-        onclick="${isDraw&&!isTBD?`savePenWinner('${round}','${m.id}','${side}')`:''}" >
+        onclick="savePenWinner('${round}','${m.id}','${side}')" >
         <span style="flex:1;font-size:9px;font-weight:700;color:${team==='?'||team.includes('TBD')?'rgba(13,31,78,0.3)':isDraw&&pr.pen_winner===side?'var(--gold)':'var(--navy)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-style:${team==='?'||team.includes('TBD')?'italic':'normal'};" title="${team}">
           ${isDraw&&pr.pen_winner===side?'🏆 ':''}${team==='?'||team.includes('TBD')?'⏳ Por definir':team}
         </span>
         <input style="${inp}" type="tel" inputmode="numeric" value="${isTBD?'':val}" placeholder="–" maxlength="2"
           ${isTBD?'disabled':''}
-          onchange="saveFasePred('${round}','${m.id}','${side}',this.value)"
-          oninput="if(parseInt(this.value)>20)this.value=20;"
+          data-mid="${m.id}" data-side="${side}" onchange="saveFasePred('${round}','${m.id}','${side}',this.value)" onblur="saveFasePred('${round}','${m.id}','${side}',this.value);renderBracket();""
+          oninput="if(parseInt(this.value)>20)this.value=20; (function(el,mid){var pb=document.getElementById('penBar_'+mid);if(!pb)return;var card=pb.closest('div[style*=border-radius]');if(!card)return;var inputs=card.querySelectorAll('input');if(inputs.length<2)return;var v0=inputs[0].value,v1=inputs[1].value;pb.style.display=(v0!==''&&v1!==''&&parseInt(v0)===parseInt(v1))?'block':'none';})(this,'${m.id}')"
           onclick="event.stopPropagation()"/>
       </div>`;
 
     return `<div style="background:${isTBD?'rgba(13,31,78,0.02)':bg};border:1.5px solid ${isTBD?'rgba(13,31,78,0.1)':border};border-radius:6px;overflow:hidden;width:${ROUND_W}px;${isTBD?'opacity:0.7;':''}">
       ${row(homeTeam,'home',hv)}
       ${row(awayTeam,'away',av)}
-      ${isDraw&&!isTBD?`<div style="background:#fff8e1;padding:1px 5px;font-size:7.5px;color:var(--gold);font-weight:800;letter-spacing:0.5px;text-align:center;">PENALES · Click en ganador</div>`:''}
+      <div id="penBar_${m.id}" style="display:${isDraw&&!isTBD?'block':'none'};background:#fff8e1;padding:2px 5px;font-size:8px;color:var(--gold);font-weight:800;letter-spacing:0.5px;text-align:center;">PENALES · Click en ganador</div>
     </div>`;
   }
 
@@ -2707,20 +2746,24 @@ function renderBracket() {
   wrap.innerHTML = out;
   wrap.style.minWidth = TOTAL_W + 'px';
   wrap.style.height = TOTAL_H + 'px';
+  // Restore input values after re-render
+  wrap.querySelectorAll('input').forEach(inp => {
+    const key = inp.dataset.mid+'_'+inp.dataset.side;
+    if(savedVals[key] !== undefined && savedVals[key] !== '') inp.value = savedVals[key];
+  });
 }
 
 
 window.savePenWinner = async function(round, matchId, side) {
   if(faseActiveIdx===null){showToast('⚠ Selecciona tu nombre primero');return;}
+  if(players[faseActiveIdx]?.done2){showToast('🔒 Tu Fase 2 está finalizada');return;}
   const p = players[faseActiveIdx];
   if(!p.preds2) p.preds2={};
   if(!p.preds2[round]) p.preds2[round]={};
   if(!p.preds2[round][matchId]) p.preds2[round][matchId]={};
   p.preds2[round][matchId].pen_winner = side;
-  try{
-    await updateDoc(doc(playersCol,p.id),{preds2:p.preds2});
-    renderBracket(); // re-render to update button colors
-  }catch(e){console.error(e);}
+  try{ await updateDoc(doc(playersCol,p.id),{preds2:p.preds2}); }catch(e){console.error(e);}
+  renderBracket();
 };
 
 function renderFaseTab() {
